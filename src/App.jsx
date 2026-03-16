@@ -1,28 +1,35 @@
-import { useState } from 'react'
-import './App.css'
-import {Routes, Route} from 'react-router';
-import Home from './pages/Home';
-import Register from './pages/Register';
-import Navbar from './components/NavBar';
-import StudentDetail from './components/StudentDetails';
+import { useState } from "react";
+import Navbar from "./components/NavBar";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import StudentDetails from "./components/StudentDetails";
+import { Routes, Route } from "react-router";
 
 function App() {
+  const [students, setStudents] = useState([
+    { id: 1, name: "Juan Dela Cruz", email: "juan@example.com", course: "BSIT" },
+    { id: 2, name: "Maria Santos", email: "maria@example.com", course: "BSCS" }
+  ]);
+
+  const addStudent = (newStudent) => {
+    setStudents(prev => [
+      ...prev,
+      { id: prev.length + 1, ...newStudent }
+    ]);
+  };
 
   return (
     <>
-   {/*temporary*/}
-     <Navbar />
-      <div>
-        <div>
-          <Routes>
-            <Route path='/Home' element={<Home />}>Home</Route>
-            <Route path='/Register' element={<Register />}>Register</Route>
-            <Route path='/students/:id' element={<StudentDetail />}>StudentDetail</Route>
-          </Routes>
-        </div>
+      <Navbar />
+      <div style={{ padding: "20px" }}>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/register" element={<Register addStudent={addStudent} />} />
+          <Route path="/students" element={<StudentDetails students={students} />} />
+        </Routes>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
